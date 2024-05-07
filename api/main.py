@@ -1,21 +1,21 @@
-import openai
-
-from api.openai_client import client
 import re
 
-from fastapi import FastAPI, Query, HTTPException, status
+import openai
+from fastapi import FastAPI, HTTPException, Query, status
+
+from api.openai_client import client
 
 app = FastAPI(root_path="/api")
 
 
 @app.get("/teamDescription")
-def get_team_description(
-    team_name: str = Query(alias="teamName")
-) -> dict[str, str]:
+def get_team_description(team_name: str = Query(alias="teamName")) -> dict[str, str]:
     chat_prompt = f"give me information about hockey team {team_name} in structured format field:value"
 
     try:
-        response = client.chat.completions.create(model="gpt-3.5-turbo", messages=[{"role": "user", "content": chat_prompt}])
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo", messages=[{"role": "user", "content": chat_prompt}]
+        )
     except openai.InternalServerError:
         raise HTTPException(status_code=status.HTTP_502_BAD_GATEWAY)
     except openai.APITimeoutError:
@@ -23,6 +23,8 @@ def get_team_description(
     except openai.RateLimitError:
         raise HTTPException(status_code=status.HTTP_502_BAD_GATEWAY)
     response_text = response.choices[0].message.content
+    if response_text is None:
+        raise HTTPException(status_code=404)
 
     fields = ["Name", "Arena", "League", "Colors"]
     result = {}

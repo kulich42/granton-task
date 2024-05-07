@@ -1,6 +1,6 @@
 from typing import AsyncIterator
-import httpx
 
+import httpx
 import pytest
 
 

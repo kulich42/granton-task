@@ -1,31 +1,34 @@
 import json
+
 from httpx import AsyncClient
 
 
-async def test_generate_team_description(client: AsyncClient, httpx_mock, chatgpt_response: str) -> None:
+async def test_generate_team_description(
+    client: AsyncClient, httpx_mock, chatgpt_response: str
+) -> None:
     httpx_mock.add_response(
-        content=json.dumps({
-          "choices": [
+        content=json.dumps(
             {
-              "finish_reason": "stop",
-              "index": 0,
-              "message": {
-                "content": chatgpt_response,
-                "role": "assistant"
-              },
-              "logprobs": None
+                "choices": [
+                    {
+                        "finish_reason": "stop",
+                        "index": 0,
+                        "message": {"content": chatgpt_response, "role": "assistant"},
+                        "logprobs": None,
+                    }
+                ],
+                "created": 1677664795,
+                "id": "chatcmpl-7QyqpwdfhqwajicIEznoc6Q47XAyW",
+                "model": "gpt-3.5-turbo-0613",
+                "object": "chat.completion",
+                "usage": {
+                    "completion_tokens": 17,
+                    "prompt_tokens": 57,
+                    "total_tokens": 74,
+                },
             }
-          ],
-          "created": 1677664795,
-          "id": "chatcmpl-7QyqpwdfhqwajicIEznoc6Q47XAyW",
-          "model": "gpt-3.5-turbo-0613",
-          "object": "chat.completion",
-          "usage": {
-            "completion_tokens": 17,
-            "prompt_tokens": 57,
-            "total_tokens": 74
-          }
-        }).encode())
+        ).encode()
+    )
     r = await client.get(
         f"/api/teamDescription",
         params={"teamName": "Vítkovice"},
@@ -37,7 +40,7 @@ async def test_generate_team_description(client: AsyncClient, httpx_mock, chatgp
         "Name": "HC Vítkovice",
         "Arena": "Ostravar Aréna",
         "League": "Czech Extraliga",
-        "Colors": "Blue, white, and red"
+        "Colors": "Blue, white, and red",
     }
 
 
