@@ -8,8 +8,9 @@ This information is fetched from ChatGPT and extracted from the response using r
 * install poetry (https://python-poetry.org/)
 * run `poetry install` in the project root directory
 * set `OPENAI_API_KEY` environment variable to your OpenAI API key
+* run `poetry shell`
 * run `uvicorn api.main:app --reload --port 8000`
-* go to `/api/teamDescription` and provide the team name as `teamName` query parameter
+* go to `localhost:8000/api/teamDescription` and provide the team name as `teamName` query parameter
 
 ## Running in Docker
 Note: I haven't been able to make this work, possibly due to WSL not  allowing ChatGPT to contact it's API
