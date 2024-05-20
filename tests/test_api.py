@@ -13,7 +13,14 @@ async def test_generate_team_description(
                     {
                         "finish_reason": "stop",
                         "index": 0,
-                        "message": {"content": chatgpt_response, "role": "assistant"},
+                        "message": {
+                            "function_call": {
+                                "name": "team_desctiption",
+                                "arguments": '{"name":"HC Vítkovice","arena":"Ostravar Aréna","league":'
+                                '"Czech Extraliga","colors":"Blue, white and red"}',
+                            },
+                            "role": "assistant",
+                        },
                         "logprobs": None,
                     }
                 ],
@@ -37,10 +44,10 @@ async def test_generate_team_description(
     response_data = r.json()
 
     assert response_data == {
-        "Name": "HC Vítkovice",
-        "Arena": "Ostravar Aréna",
-        "League": "Czech Extraliga",
-        "Colors": "Blue, white, and red",
+        "name": "HC Vítkovice",
+        "arena": "Ostravar Aréna",
+        "league": "Czech Extraliga",
+        "colors": "Blue, white and red",
     }
 
 
