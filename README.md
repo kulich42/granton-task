@@ -1,7 +1,9 @@
 # Granton interview task
 
 This project implements REST API to provide name, arena, league and colors of hockey teams.
-This information is fetched from ChatGPT and extracted from the response using regular expressions.
+The information is fetched from ChatGPT using the function call feature.
+REST API is implemented using Fast API framework and tested using pytest. Black, 
+mypy and isort are used for improved code quality.
 
 ## Running the project
 
