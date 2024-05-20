@@ -71,7 +71,7 @@ async def test_generate_team_desctiption_no_chat_response(
         f"/api/teamDescription",
         params={"teamName": "Vítkovice"},
     )
-    assert r.status_code == 504
+    assert r.status_code == 502
 
 
 async def test_generate_team_desctiption_out_of_credits(

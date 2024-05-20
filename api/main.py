@@ -36,14 +36,10 @@ def get_team_description(team_name: str = Query(alias="teamName")) -> dict[str, 
             ],
             function_call="auto",
         )
-    except openai.InternalServerError:
-        raise HTTPException(status_code=status.HTTP_502_BAD_GATEWAY)
-    except openai.APITimeoutError:
-        raise HTTPException(status_code=status.HTTP_504_GATEWAY_TIMEOUT)
-    except openai.RateLimitError:
+    except openai.OpenAIError:
         raise HTTPException(status_code=status.HTTP_502_BAD_GATEWAY)
     function_call = response.choices[0].message.function_call
     if function_call is None:
-        raise HTTPException(status_code=404)
+        raise HTTPException(status_code=status.HTTP_502_BAD_GATEWAY)
 
     return json.loads(function_call.arguments)
